@@ -15,11 +15,10 @@ const CartPage = () => {
     if (items.length === 0) {
         return (
             <div className="container mx-auto text-center p-8 flex flex-col items-center gap-6">
-                <FiShoppingCart size={80} className="text-neutral-border" />
-                <h1 className="font-display text-4xl text-brand-dark">Tú carrito está vacío</h1>
-                <p className="font-body text-neutral-text-muted max-w-md">Parece que aún no ha añadido a ningún producto. ¡Explora nuestro menú y llénalo de sabor!</p>
-                <Link to='/menu' className="bg-brand-primary text-white font-bold font-body py-3 px-6 rounded-lg hover:bg-brand-primary-light transition-colors">Volver al Menú</Link>
-            </div>
+                <FiShoppingCart size={80} className="text-neutral-border" aria-hidden="true" focusable="false" />
+                <h1 className="font-display text-4xl text-brand-dark">Tu carrito está vacío</h1>
+                <p className="font-body text-neutral-text-muted max-w-md">Parece que aún no has añadido ningún producto. ¡Explora nuestro menú y llénalo de sabor!</p>
+                <Link to='/menu' className="bg-brand-primary text-white font-bold font-body py-3 px-6 rounded-lg hover:bg-brand-primary-light transition-colors">Volver al Menú</Link>            </div>
         )
     }
 

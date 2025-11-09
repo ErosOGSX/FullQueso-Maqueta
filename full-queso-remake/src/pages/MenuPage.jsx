@@ -26,18 +26,17 @@ const MenuPage = () => {
     }
 
     const serviceNames = {delivery: 'Delivery', pickup: 'Entrega al Carro', 'in-store': 'Pedido en Tienda'};
-
-    const locationIsImplicit = store.name.toLowerCase().includes(city.toLowerCase())
-    
-    const locationDisplay = locationIsImplicit ? store.name : `${store.name}, ${city}`;
-
+    const serviceLabel = serviceNames[service] ?? 'Servicio';
+    const cityName = city ?? store?.city ?? ''
+    const locationIsImplicit = cityName && store.name.toLowerCase().includes(cityName.toLowerCase())
+    const locationDisplay = cityName ? (locationIsImplicit ? store.name : `${store.name}, ${cityName}`) : store.name
     const categories = ['Todos', 'Party Box', 'Promos', 'Churros', 'Pastelitos', 'Tequeños', 'Bebidas', 'Quesos', 'Congelados'];
 
     return (
         <div className='container mx-auto px-4 py-6'>
             <div className='flex justify-between items-center mb-6'>
                 <div>
-                    <p className='font-body text-sm text-neutral-text-muted'> {serviceNames[service]} en</p>
+                    <p className='font-body text-sm text-neutral-text-muted'> {serviceLabel} en</p>
                     <h2 className='font-display-alt text-2xl text-brand-dark'> {locationDisplay} </h2>
                 </div>
                 <button onClick={handleClearSelection} className='font-body font-bold text-brand-primary text-sm'>Cambiar de Tienda</button>

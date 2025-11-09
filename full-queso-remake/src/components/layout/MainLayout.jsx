@@ -5,7 +5,7 @@ import BottomNav from './BottomNav'
 
 const MainLayout = () => {
     <div className='font-body bg-neutral-background min-h-screen'>
-        <header />
+        <Header />
         <main className='pb-20 md:pb-0'>
             <Outlet />
         </main>

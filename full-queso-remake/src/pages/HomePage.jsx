@@ -26,23 +26,24 @@ const HomePage = () => {
     }
 
     const handleCitySelect = (city) => {
-        const availableStores = storeData.stores[city].filter(store => store.services.includes(selection.service));
+        if (!selection.service) {
+            alert("Selecciona un servicio primero");
+            return;
+        }
+        const storesInCity = storeData.stores?.[city] ?? [];
+        const availableStores = storesInCity.filter(store => store.services.includes(selection.service));
         if (availableStores.length === 0) {
             alert("Ups! No tenemos disponible este servicio en " + city)
             return
         }
-        setSelection({...selection, city});
+        setSelection(prev => ({ ...prev, city }));
         setStep('store')
     }
-
     const handleStoreSelect = (store) => {
         const finalSelection = { ...selection, store: store}
-        saveSelection(finalSelection)
-        navigate('/menu')
-    }
-
     if (step === 'store') {
-        const availableStores = storeData.stores[selection.city].filter(store => store.services.includes(selection.service))
+        const storesInCity = storeData.stores?.[selection.city] ?? []
+        const availableStores = storesInCity.filter(store => store.services.includes(selection.service))
             return (
                 <div className='flex flex-col items-center gap-4 p-8'>
 
@@ -51,6 +52,9 @@ const HomePage = () => {
                         <SelectionButton key={store.id} onClick={() => handleStoreSelect(store)}> {store.name} </SelectionButton>
                     ))}
 
+                </div>
+            )
+        }
                 </div>
             )
         }

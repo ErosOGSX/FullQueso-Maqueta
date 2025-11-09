@@ -4,22 +4,32 @@ import { useNavigate } from 'react-router-dom'
 //eslint-disable-next-line no-unused-vars
 const InputField = ({ id, label, register, required, error, type = 'text', ...props }) => (
     <div className='w-full'>
-        <label htmlFor="htmlFor={id}" className='block font-body font-bold text-brand-dark mb-2'> {label} </label>
-        <input id={id} type='text' {...register(id, {required: required && 'Este campo es obligatorio'})} {...props} className={`w-full p-3 font-body bg-neutral-surface border-2 rounded-lg transition-colors ${error ? 'border-red-500 focus:border-red-500' : 'border-neutral-border focus:border-brand-primary'} focus:outline-none`} /> {error && <p className='text-red-500 text-sm mt-1'> {error.message} </p>}
+        <label htmlFor={id} className='block font-body font-bold text-brand-dark mb-2'> {label} </label>
+        <input
+          id={id}
+          type={type}
+          aria-invalid={!!error}
+          aria-describedby={error ? `${id}-error` : undefined}
+          {...register(id, { required: required && 'Este campo es obligatorio' })}
+          {...props}
+          className={`w-full p-3 font-body bg-neutral-surface border-2 rounded-lg transition-colors ${error ? 'border-red-500 focus:border-red-500' : 'border-neutral-border focus:border-brand-primary'} focus:outline-none`}
+        />
+        {error && <p id={`${id}-error`} role='alert' className='text-red-500 text-sm mt-1'> {error.message} </p>}
     </div>
 );
-
 const EventoPage = () => {
     const navigate = useNavigate();
     const { register, handleSubmit, formState: {errors}, reset } = useForm()
 
     const onSubmit = (data) => {
-        //! Aqui se envían los datos a la API o al back-end (RECORDATORIO)
-        console.log('Datos del Evento:', data)
-        alert('¡Gracias por enviar los detalles de tu evento! Nos pondremos en contacto contigo pronto.')
+        // TODO: Enviar datos a la API/back-end
+        if (process.env.NODE_ENV !== 'production') {
+          console.debug('Datos del Evento (solo dev):', data);
+        }
+        // TODO: Reemplazar alert por un toast/UI no bloqueante
+        alert('¡Gracias por enviar los detalles de tu evento! Nos pondremos en contacto contigo pronto.');
         reset();
     };
-
 
     const handleClearForm = () => {
         reset();
@@ -31,19 +41,27 @@ const EventoPage = () => {
             
             <p className='font-body text-neutral-text-muted text-center mb-8 max-w-lg'>¿Planeando una fiesta, reunión o evento corporativo? ¡Nosotros nos encargamos de la comida! Rellena el formulario y contactaremos.</p>
 
-            <form onSubmit={handleSubmit(onSubmit)} className='w-full max-w-lg bg-neutral-surface shadow-xl rounded-lg p-8 space-y-6' noValidate>
-
-                <inputField id='fullName' label='Nombre Completo' register={register} required error={errors.fullName} />
-                <inputField id='email' label='Correo Electrónico' type='email' register={register} required error={errors.email} />
-                <inputField id='phone' label='Teléfono' type='tel' register={register} required error={errors.phone} />
-                <inputField id='city' label='Ciudad del Evento' register={register} required error={errors.city} />
-                <inputField id='eventDate' label='Fecha (Opcional)' type='date' register={register} error={errors.eventDate} />
+                <InputField id='fullName' label='Nombre Completo' register={register} required error={errors.fullName} />
+                <InputField id='email' label='Correo Electrónico' type='email' register={register} required error={errors.email} />
+                <InputField id='phone' label='Teléfono' type='tel' register={register} required error={errors.phone} />
+                <InputField id='city' label='Ciudad del Evento' register={register} required error={errors.city} />
+                <InputField id='eventDate' label='Fecha (Opcional)' type='date' register={register} error={errors.eventDate} />                <inputField id='eventDate' label='Fecha (Opcional)' type='date' register={register} error={errors.eventDate} />
 
                 <div>
                     <label htmlFor="details" className='block font-body font-bold text-brand-dark mb-2'>Detalles del Evento</label>
 
-                    <textarea id="details" {...register('details', {required: 'Cuéntanos un poco sobre tu evento'})} rows='4' className={`w-full p-3 font-body bg-neutral-surface border-2 rounded-lg transition-colors ${errors.details ? 'border-red-500 focus:border-red-500' : 'border-neutral-border focus:border-brand-primary'}focus:outline-none`}></textarea>
-
+                    <textarea
+                      id="details"
+                      {...register('details', {
+                        required: 'Cuéntanos un poco sobre tu evento'
+                      })}
+                      rows="4"
+                      className={`w-full p-3 font-body bg-neutral-surface border-2 rounded-lg transition-colors ${
+                        errors.details
+                          ? 'border-red-500 focus:border-red-500'
+                          : 'border-neutral-border focus:border-brand-primary'
+                      } focus:outline-none`}
+                    ></textarea>
                     {errors.details && <p className='text-red-500 text-sm mt-1'> {errors.details.message} </p>}
                 </div>
 

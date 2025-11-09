@@ -6,8 +6,7 @@ const CartItem = ({ item }) => {
     const { increaseQuantity, decreaseQuantity, removeProduct } = useCartStore();
 
     return (
-        <div className="flex items-center gap-4 p-4 bg-nuetral-surface rounded-lg shadow">
-
+        <div className="flex items-center gap-4 p-4 bg-neutral-surface rounded-lg shadow">
             <img src={item.image} alt={item.name} className="w-20 h-20 rounded-md object-cover" />
 
             <div className="grow">

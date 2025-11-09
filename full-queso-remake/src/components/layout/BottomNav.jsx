@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { FiHome, FiTag, FiClipboard, FiUser } from 'react-icons/fi'
+import { FiHome, FiTag, FiClipboard, FiUser, FiShoppingCart } from 'react-icons/fi'
 import useCartStore from '../../store/cartStore';
 
 const BottomNav = () => {
@@ -15,7 +15,7 @@ const BottomNav = () => {
                     <div className='flex justify-around items-center h-full'>
                         <NavLink
                         to='/menu'
-                        className='flex flex-col items center text-neutral-text-muted'
+                        className='flex flex-col items-center text-neutral-text-muted'
                         style={({ isActive }) => isActive ? activeLinkStyle : undefined}>
 
                             <FiHome size={24} />

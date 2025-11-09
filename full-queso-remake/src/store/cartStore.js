@@ -20,28 +20,16 @@ const useCartStore = create ((set) => ({
         ),
     })),
     decreaseQuantity: (productId) => set((state) => ({
-    decreaseQuantity: (productId) => set((state) => ({
         items: state.items
             .map(item =>
                 item.id === productId ? { ...item, quantity: item.quantity - 1 } : item
             )
             .filter(item => item.quantity > 0),
     })),
-
     removeProduct: (productId) => set((state) => ({
         items: state.items.filter(item => item.id !== productId)
-    })),            .map(item =>
-                item.id === productId ? { ...item, quantity: item.quantity - 1 } : item
-            )
-            .filter(item => item.quantity > 0),
-    })),    removeProduct: (productId) => set((state) => ({
-        items: state.items.filter(item => item.id !== productId)
     })),
-
-    clearCart: () => set({ items: []}),
-
-
 }))
 
 
-export default useCartStore
+export default useCartStore;

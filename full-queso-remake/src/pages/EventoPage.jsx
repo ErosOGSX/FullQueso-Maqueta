@@ -45,8 +45,7 @@ const EventoPage = () => {
                 <InputField id='email' label='Correo Electrónico' type='email' register={register} required error={errors.email} />
                 <InputField id='phone' label='Teléfono' type='tel' register={register} required error={errors.phone} />
                 <InputField id='city' label='Ciudad del Evento' register={register} required error={errors.city} />
-                <InputField id='eventDate' label='Fecha (Opcional)' type='date' register={register} error={errors.eventDate} />                <inputField id='eventDate' label='Fecha (Opcional)' type='date' register={register} error={errors.eventDate} />
-
+                <InputField id='eventDate' label='Fecha (Opcional)' type='date' register={register} error={errors.eventDate} />
                 <div>
                     <label htmlFor="details" className='block font-body font-bold text-brand-dark mb-2'>Detalles del Evento</label>
 

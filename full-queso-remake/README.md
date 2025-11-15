@@ -271,7 +271,7 @@ pnpm run audit        # Auditoría de seguridad
 
 ## 📄 Licencia
 
-Este proyecto es propiedad de Alex Cedillo Front-End Developer. Todos los derechos reservados.
+Este proyecto es propiedad de Alex Cedillo - Front-End Developer. Todos los derechos reservados.
 
 ---
 

@@ -1,2 +1,13 @@
+# PNPM Workspace Configuration
+packages:
+  - '.'
+
+# Only build dependencies that are required
 onlyBuiltDependencies:
   - esbuild
+
+# Prevent hoisting of certain packages
+shamefully-hoist: false
+
+# Enable strict peer dependencies
+strict-peer-dependencies: true

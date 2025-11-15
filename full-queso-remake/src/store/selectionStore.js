@@ -5,11 +5,14 @@ const useSelectionStore = create((set) => ({
     city: null,
     store: null,
 
-    setSelection: (selection) => set({
-        service: selection.service,
-        city: selection.city,
-        store: selection.store,
-    }),
+    setSelection: (selection) => {
+        if (!selection || typeof selection !== 'object') return;
+        set({
+            service: selection.service || null,
+            city: selection.city || null,
+            store: selection.store || null,
+        });
+    },
 
     clearSelection: () => set({
         service: null,

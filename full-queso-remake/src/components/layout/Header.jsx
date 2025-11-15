@@ -1,6 +1,9 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import { FiShoppingCart, FiUser, FiMenu } from 'react-icons/fi' 
+import React, { useState } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { FiShoppingCart, FiUser, FiMenu } from 'react-icons/fi'
+import LoyaltyCard from '../loyalty/LoyaltyCard'
+import RewardsModal from '../loyalty/RewardsModal'
+import MobileMenu from './MobileMenu' 
 
 //? Paleta de colores para referencia rápida
 // brand-dark: '#3C1E46'
@@ -16,10 +19,13 @@ const Logo = () => (
 )
 
 const Header = () => {
-    const navLinkClasses = 'text-lg font-body font-bold text-brand-dark-light hover:text-brand-primary transition-colors duration-300'
+    const navigate = useNavigate();
+    const [showRewards, setShowRewards] = useState(false);
+    const [showMobileMenu, setShowMobileMenu] = useState(false);
+    const navLinkClasses = 'text-lg font-body font-bold text-black hover:text-brand-primary transition-colors duration-300'
 
     return (
-        <header className='bg-neutral-surface shadow-md sticky top-0 z-50'>
+        <header className='bg-white shadow-md sticky top-0 z-50'>
             
             <div className='container mx-auto px-4 py-3 flex justify-between items-center'> 
                 
@@ -35,21 +41,44 @@ const Header = () => {
 
                 <div className='flex items-center gap-4'>
 
-                    <button className='p-2 hover:bg-brand-yellow-light rounded-full transition-colors'>
+                    <div className='hidden md:block cursor-pointer' onClick={() => navigate('/fidelidad')}>
+                        <LoyaltyCard compact />
+                    </div>
 
-                        <FiUser size={24} className='text-brand-dark' />
-
+                    <button 
+                        onClick={() => {
+                            try {
+                                navigate('/cuenta');
+                            } catch (error) {
+                                console.error('Error navigating to cuenta:', error);
+                            }
+                        }} 
+                        className='p-2 hover:bg-brand-yellow-light rounded-full transition-colors'
+                    >
+                        <FiUser size={24} className='text-neutral-text-muted' />
                     </button>
 
-                    <button className='md:hidden p-2'>
-
-                        <FiMenu size={24} className='text-brand-dark' />
-
+                    <button 
+                        className='md:hidden p-2 hover:bg-brand-yellow-light rounded-full transition-colors'
+                        onClick={() => setShowMobileMenu(true)}
+                        aria-label="Abrir menú"
+                    >
+                        <FiMenu size={24} className='text-neutral-text-muted' />
                     </button>
 
                 </div>
                 
             </div>
+
+            <RewardsModal 
+                isOpen={showRewards} 
+                onClose={() => setShowRewards(false)} 
+            />
+
+            <MobileMenu 
+                isOpen={showMobileMenu} 
+                onClose={() => setShowMobileMenu(false)} 
+            />
 
         </header>
     )

@@ -22,13 +22,18 @@ const EventoPage = () => {
     const { register, handleSubmit, formState: {errors}, reset } = useForm()
 
     const onSubmit = (data) => {
-        // TODO: Enviar datos a la API/back-end
-        if (process.env.NODE_ENV !== 'production') {
-          console.debug('Datos del Evento (solo dev):', data);
+        try {
+            // TODO: Enviar datos a la API/back-end
+            if (process.env.NODE_ENV !== 'production') {
+                console.debug('Datos del Evento (solo dev):', data);
+            }
+            // TODO: Reemplazar alert por un toast/UI no bloqueante
+            alert('¡Gracias por enviar los detalles de tu evento! Nos pondremos en contacto contigo pronto.');
+            reset();
+        } catch (error) {
+            console.error('Error al enviar formulario:', error);
+            alert('Hubo un error al enviar el formulario. Por favor intenta de nuevo.');
         }
-        // TODO: Reemplazar alert por un toast/UI no bloqueante
-        alert('¡Gracias por enviar los detalles de tu evento! Nos pondremos en contacto contigo pronto.');
-        reset();
     };
 
     const handleClearForm = () => {
@@ -41,6 +46,7 @@ const EventoPage = () => {
             
             <p className='font-body text-neutral-text-muted text-center mb-8 max-w-lg'>¿Planeando una fiesta, reunión o evento corporativo? ¡Nosotros nos encargamos de la comida! Rellena el formulario y contactaremos.</p>
 
+            <form onSubmit={handleSubmit(onSubmit)} className='w-full max-w-md space-y-6'>
                 <InputField id='fullName' label='Nombre Completo' register={register} required error={errors.fullName} />
                 <InputField id='email' label='Correo Electrónico' type='email' register={register} required error={errors.email} />
                 <InputField id='phone' label='Teléfono' type='tel' register={register} required error={errors.phone} />
@@ -64,21 +70,12 @@ const EventoPage = () => {
                     {errors.details && <p className='text-red-500 text-sm mt-1'> {errors.details.message} </p>}
                 </div>
 
-                                {/* BOTÓN DE ENVÍO MAIN */}
-
                 <button type='submit' className='w-full bg-brand-primary text-white font-bold font-body py-3 rounded-lg hover:bg-brand-primary-light transition-colors text-lg'>Enviar Solicitud</button>
                                 
-                                {/* BOTONES DE ACCIÓN SECUNDARIOS */}
-
                 <div className='flex justify-between items-center mt-4'>
-
                     <button type='button' onClick={() => navigate(-1)} className='font-body font-bold text-neutral-text-muted hover:text-brand-dark transition-colors'> Volver </button>
-
                     <button type='button' onClick={handleClearForm} className='font-body font-bold text-brand-primary hover:underline transition-colors'>Limpiar Formulario</button>
-
                 </div>
-
-
             </form>
 
         </div>

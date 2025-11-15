@@ -1,0 +1,33 @@
+.modal-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-track {
+  background: #E5E7EB;
+  border-radius: 3px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-thumb {
+  background: #EF4444;
+  border-radius: 3px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #DC2626;
+}
+
+.modal-scrollbar::-webkit-scrollbar-corner {
+  background: transparent !important;
+  border-radius: 3px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-button {
+  display: none !important;
+  height: 0 !important;
+  width: 0 !important;
+}
+
+.modal-scrollbar::-webkit-scrollbar-button:start:decrement,
+.modal-scrollbar::-webkit-scrollbar-button:end:increment {
+  display: none !important;
+}

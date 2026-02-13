@@ -6,6 +6,7 @@ import useNotificationStore from '../../store/notificationStore'
 import useOrdersStore from '../../store/ordersStore'
 import useCartStore from '../../store/cartStore'
 import useSelectionStore from '../../store/selectionStore'
+import paymentService from '../../services/paymentService'
 
 const ExpressCheckout = ({ total, onSuccess }) => {
     const { 
@@ -31,21 +32,37 @@ const ExpressCheckout = ({ total, onSuccess }) => {
 
         setIsProcessing(true)
         try {
-            // Crear orden en ordersStore
-            const result = addOrder({
+            // Crear orden en el backend
+            const orderData = {
+                customerInfo: userData,
                 items: items,
                 total: total,
-                customerInfo: userData,
-                service: service,
-                store: store
-            })
+                deliveryAddress: userData.deliveryAddress || userData.address,
+                deliveryNotes: `Servicio: ${service}, Tienda: ${store}`
+            }
             
-            // Limpiar carrito
-            clearCart()
+            const result = await paymentService.createOrder(orderData)
             
-            success('¡Pedido Confirmado!', `Orden ${result.orderId.slice(-6)} procesada exitosamente`)
-            onSuccess(result)
+            if (result.success) {
+                // Agregar a ordersStore local
+                addOrder({
+                    ...result.order,
+                    items: items,
+                    customerInfo: userData,
+                    service: service,
+                    store: store
+                })
+                
+                // Limpiar carrito
+                clearCart()
+                
+                success('¡Pedido Confirmado!', `Orden ${result.order.id.slice(-6)} procesada exitosamente`)
+                onSuccess(result.order)
+            } else {
+                throw new Error(result.error || 'Error creando la orden')
+            }
         } catch (err) {
+            console.error('Express checkout error:', err)
             error('Error en Checkout Express', err.message)
         } finally {
             setIsProcessing(false)

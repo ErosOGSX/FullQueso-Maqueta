@@ -88,7 +88,7 @@ export class CSSOptimizer {
 export class JSOptimizer {
   static async loadModuleDynamically(modulePath) {
     try {
-      const module = await import(modulePath);
+      const module = await import(/* @vite-ignore */ modulePath);
       return module.default || module;
     } catch (error) {
       console.error('Failed to load module:', modulePath, error);

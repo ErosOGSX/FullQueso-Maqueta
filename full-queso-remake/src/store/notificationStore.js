@@ -46,4 +46,5 @@ const useNotificationStore = create((set, get) => ({
         get().addNotification({ type: 'info', title, message, duration })
 }))
 
+export { useNotificationStore };
 export default useNotificationStore

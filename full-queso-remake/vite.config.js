@@ -5,19 +5,11 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    react({
-      // Enable React Fast Refresh optimizations
-      fastRefresh: true,
-      // Optimize JSX runtime
-      jsxRuntime: 'automatic'
-    }),
+    react(),
     tailwindcss()
   ],
   server: {
-    port: (() => {
-      const port = process.env.PORT ? parseInt(process.env.PORT) : 3000;
-      return isNaN(port) || port < 1 || port > 65535 ? 3000 : port;
-    })(),
+    port: 5173,
     host: true,
   },
   build: {

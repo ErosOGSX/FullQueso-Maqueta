@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FiCreditCard, FiShield, FiEye, FiEyeOff } from 'react-icons/fi';
 import { PaymentValidator, SecurePaymentHandler } from '../../utils/paymentValidation';
 import { SecurityManager } from '../../utils/securityHeaders';
+import { getBankIcon } from './BankIcons';
 import useNotificationStore from '../../store/notificationStore';
 
 const SecurePaymentForm = ({ onPaymentSubmit, onCancel, amount }) => {
@@ -160,10 +161,13 @@ const SecurePaymentForm = ({ onPaymentSubmit, onCancel, amount }) => {
   };
 
   const getCardIcon = () => {
-    const cardIcons = {
-      visa: '💳',
-      mastercard: '💳', 
-      amex: '💳',
+    const bankIcon = getBankIcon(cardType);
+    if (bankIcon) {
+      return bankIcon;
+    }
+    
+    // Fallback para tarjetas no reconocidas
+    const fallbackIcons = {
       discover: '💳',
       dinersclub: '💳',
       jcb: '💳',
@@ -171,16 +175,9 @@ const SecurePaymentForm = ({ onPaymentSubmit, onCancel, amount }) => {
       maestro: '💳',
       elo: '💳',
       hipercard: '💳',
-      banesco: '🏦', // Venezuelan banks
-      mercantil: '🏦',
-      provincial: '🏦',
-      venezuela: '🏦',
-      bicentenario: '🏦',
-      tesoro: '🏦',
-      exterior: '🏦',
       unknown: '💳'
     };
-    return cardIcons[cardType] || '💳';
+    return fallbackIcons[cardType] || '💳';
   };
   
   const getCardDisplayName = () => {
@@ -226,17 +223,16 @@ const SecurePaymentForm = ({ onPaymentSubmit, onCancel, amount }) => {
               value={formData.cardNumber}
               onChange={(e) => handleInputChange('cardNumber', e.target.value)}
               placeholder="1234 5678 9012 3456"
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+              className={`w-full px-3 py-2 pr-16 border rounded-lg focus:outline-none focus:ring-2 ${
                 errors.cardNumber ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'
               }`}
               maxLength="23"
             />
-            <div className="absolute right-3 top-2.5 flex items-center gap-1">
-              <span className="text-xl">{getCardIcon()}</span>
-              {cardType && cardType !== 'unknown' && (
-                <span className="text-xs text-gray-500 font-medium">
-                  {getCardDisplayName()}
-                </span>
+            <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
+              {getBankIcon(cardType) ? (
+                getBankIcon(cardType)
+              ) : (
+                <span className="text-xl">{getCardIcon()}</span>
               )}
             </div>
           </div>

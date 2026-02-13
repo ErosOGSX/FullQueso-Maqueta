@@ -9,12 +9,16 @@ import AccountPage from './pages/AccountPage';
 import PromoPage from './pages/PromoPage';
 import OrdersPage from './pages/OrdersPage';
 import LoyaltyPage from './pages/LoyaltyPage';
+import PaymentSuccessPage from './pages/PaymentSuccessPage';
+import PaymentCallbackPage from './pages/PaymentCallbackPage';
 import ToastContainer from './components/notifications/ToastContainer';
+import SupportChat from './components/chat/SupportChat';
 import pushNotifications from './utils/pushNotifications';
 import useExchangeRateStore from './store/exchangeRateStore';
 import useCartSync from './hooks/useCartSync';
 import { useServiceWorker, useOfflineStatus } from './hooks/useServiceWorker';
 import useNotificationStore from './store/notificationStore';
+import useOrdersStore from './store/ordersStore';
 
 
 // Componentes de página temporales
@@ -25,6 +29,7 @@ import useNotificationStore from './store/notificationStore';
 function App () {
   const { updateExchangeRate } = useExchangeRateStore();
   const { info, warning } = useNotificationStore();
+  const { initializeTimers } = useOrdersStore();
   
   // Inicializar sincronización del carrito
   useCartSync();
@@ -86,6 +91,11 @@ function App () {
     
     return () => clearInterval(exchangeInterval);
   }, [updateExchangeRate, isSupported, isRegistered, isOnline]);
+  
+  // Initialize order timers separately
+  useEffect(() => {
+    initializeTimers();
+  }, [initializeTimers]);
 
   return (
     <BrowserRouter>
@@ -93,6 +103,8 @@ function App () {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/evento" element={<EventoPage />} />
+        <Route path="/payment-success" element={<PaymentSuccessPage />} />
+        <Route path="/payment-callback" element={<PaymentCallbackPage />} />
 
         <Route element={<MainLayout />}>
 
@@ -106,6 +118,7 @@ function App () {
         </Route>
       </Routes>
       <ToastContainer />
+      <SupportChat />
     </BrowserRouter>
   )
 }

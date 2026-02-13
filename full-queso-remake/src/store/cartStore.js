@@ -77,4 +77,5 @@ const useCartStore = create((set) => ({
 }))
 
 
+export { useCartStore };
 export default useCartStore;

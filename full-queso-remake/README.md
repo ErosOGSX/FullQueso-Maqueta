@@ -207,10 +207,13 @@ full-queso-remake/
 - **Filtros Múltiples**: Por categoría, precio, popularidad
 - **Búsqueda Inteligente**: Coincidencias parciales y fuzzy matching
 
-### ⏱️ Sistema de Tiempos
-- **Tiempo Estimado**: Cálculo dinámico por complejidad
-- **Seguimiento en Tiempo Real**: Progreso del pedido
-- **Notificaciones**: Alertas de estado del pedido
+### ⏱️ Sistema de Tiempos Inteligente
+- **Cálculo Dinámico**: Basado en tipo de producto, cantidad y complejidad
+- **Factores Externos**: Considera horario, día de la semana y carga de trabajo
+- **Machine Learning**: Aprende de pedidos anteriores para mayor precisión
+- **Seguimiento en Tiempo Real**: Progreso visual con barras animadas
+- **Notificaciones Proactivas**: Alertas inteligentes y actualizaciones automáticas
+- **Gamificación**: Sistema de puntos por precisión y entregas tempranas
 
 ## 🔒 Seguridad Implementada
 
@@ -262,12 +265,50 @@ pnpm run audit        # Auditoría de seguridad
 
 ## 🌟 Próximas Funcionalidades
 
-- [ ] Integración con APIs de pago reales
-- [ ] Sistema de delivery en tiempo real
-- [ ] Chat de soporte integrado
-- [ ] Analytics avanzados
+### 🚀 Corto Plazo
+- [x] **Chat de soporte integrado** ✅
+  - Chat flotante con respuestas automáticas
+  - Horarios de atención y estados online/offline
+  - Respuestas rápidas predefinidas
+  - Persistencia de conversaciones
+- [x] **Integración con APIs de pago reales** ✅
+  - Stripe para pagos internacionales
+  - Venecard para tarjetas venezolanas
+  - Pago Móvil bancario
+  - Validación y procesamiento seguro
+- [x] **Tracking GPS en Tiempo Real** ✅
+  - Seguimiento del repartidor en mapa interactivo
+  - Estados de entrega en tiempo real
+  - Cálculo de distancia y ETA
+  - Notificaciones de progreso
 - [ ] A/B Testing framework
 - [ ] Multi-idioma (ES/EN)
+
+### 📊 Dashboard Administrativo (Proyecto Separado)
+> **Nota**: El Dashboard de Operaciones será un proyecto independiente que se conectará con este e-commerce
+- [ ] **Panel de Control**: Vista global de todos los pedidos y métricas operativas
+- [ ] **Gestión de Repartidores**: Asignación de rutas y seguimiento GPS
+- [ ] **Analytics Avanzados**: Reportes detallados de rendimiento y eficiencia
+- [ ] **Configuración de Tiempos**: Ajuste de parámetros del sistema de estimación
+- [ ] **Alertas Operativas**: Notificaciones para gerencia cuando hay desviaciones
+
+### 🎯 Sistema de Tiempos Avanzado
+- [x] **Tracking GPS en Tiempo Real**: Seguimiento del repartidor con mapa interactivo ✅
+- [ ] **Personalización por Usuario**: Tiempos basados en historial personal y preferencias
+- [ ] **Integración con Inventario**: Ajuste automático de tiempos según disponibilidad de ingredientes
+- [ ] **Experiencia UX Avanzada**: Programación de pedidos, modo express, tiempo flexible
+
+### 🔗 Integración con Sistema Administrativo
+- [ ] **API de Sincronización**: Envío de datos de pedidos y métricas al sistema admin
+- [ ] **Webhooks de Estado**: Recibir actualizaciones de estado desde el dashboard operativo
+- [ ] **Configuración Remota**: Recibir ajustes de tiempos y parámetros desde admin
+- [ ] **Reportes de Precisión**: Enviar estadísticas de accuracy al sistema central
+
+### 🤖 Machine Learning (Compartido entre proyectos)
+- [ ] **Predicción Inteligente**: Algoritmos que aprenden de pedidos anteriores
+- [ ] **Optimización Continua**: Sistema que mejora automáticamente con cada pedido
+- [ ] **Análisis Predictivo**: Anticipar demanda y optimizar recursos (Admin)
+- [ ] **Personalización Automática**: Recomendaciones basadas en comportamiento (Cliente)
 
 ## 📄 Licencia
 

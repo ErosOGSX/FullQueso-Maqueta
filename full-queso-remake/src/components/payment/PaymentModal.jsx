@@ -2,12 +2,19 @@ import React, { useState } from 'react'
 import { FiX, FiCreditCard, FiDollarSign, FiSmartphone } from 'react-icons/fi'
 import SecurePaymentForm from './SecurePaymentForm'
 import { useSecurityAudit } from '../../hooks/useSecurityAudit'
+import paymentService from '../../services/paymentService'
+
 
 const PaymentModal = ({ isOpen, onClose, total, onPaymentSuccess }) => {
     const [paymentMethod, setPaymentMethod] = useState('card')
     const [showSecureForm, setShowSecureForm] = useState(false)
     const [isProcessing, setIsProcessing] = useState(false)
     const { logSecurityEvent } = useSecurityAudit()
+    
+    const { items, clearCart } = useCartStore()
+    const { addOrder } = useOrdersStore()
+    const { userData } = useUserDataStore()
+    const { service, store } = useSelectionStore()
 
     if (!isOpen) return null
 
@@ -19,17 +26,42 @@ const PaymentModal = ({ isOpen, onClose, total, onPaymentSuccess }) => {
                 encrypted: true
             });
             
-            // Simulate secure payment processing
             setIsProcessing(true);
-            await new Promise(resolve => setTimeout(resolve, 2000));
             
-            logSecurityEvent('payment_success', {
-                amount: total,
-                token: paymentData.token
-            });
+            // Crear orden en el backend
+            const orderData = {
+                customerInfo: userData,
+                items: items,
+                total: total,
+                deliveryAddress: userData.deliveryAddress || userData.address,
+                deliveryNotes: `Servicio: ${service}, Tienda: ${store}`
+            }
             
-            onPaymentSuccess();
-            onClose();
+            const result = await paymentService.createOrder(orderData)
+            
+            if (result.success) {
+                // Agregar a ordersStore local
+                addOrder({
+                    ...result.order,
+                    items: items,
+                    customerInfo: userData,
+                    service: service,
+                    store: store,
+                    paymentMethod: 'card'
+                })
+                
+                clearCart()
+                
+                logSecurityEvent('payment_success', {
+                    amount: total,
+                    orderId: result.order.id
+                });
+                
+                onPaymentSuccess(result.order);
+                onClose();
+            } else {
+                throw new Error(result.error || 'Error creando la orden')
+            }
         } catch (error) {
             logSecurityEvent('payment_error', {
                 error: error.message,
@@ -49,17 +81,45 @@ const PaymentModal = ({ isOpen, onClose, total, onPaymentSuccess }) => {
         
         setIsProcessing(true);
         
-        logSecurityEvent('payment_attempt', {
-            amount: total,
-            method: paymentMethod
-        });
-        
-        // Simulate payment processing for non-card methods
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        setIsProcessing(false);
-        onPaymentSuccess();
-        onClose();
+        try {
+            logSecurityEvent('payment_attempt', {
+                amount: total,
+                method: paymentMethod
+            });
+            
+            // Crear orden en el backend
+            const orderData = {
+                customerInfo: userData,
+                items: items,
+                total: total,
+                deliveryAddress: userData.deliveryAddress || userData.address,
+                deliveryNotes: `Servicio: ${service}, Tienda: ${store}`
+            }
+            
+            const result = await paymentService.createOrder(orderData)
+            
+            if (result.success) {
+                // Agregar a ordersStore local
+                addOrder({
+                    ...result.order,
+                    items: items,
+                    customerInfo: userData,
+                    service: service,
+                    store: store,
+                    paymentMethod: paymentMethod
+                })
+                
+                clearCart()
+                onPaymentSuccess(result.order);
+                onClose();
+            } else {
+                throw new Error(result.error || 'Error creando la orden')
+            }
+        } catch (error) {
+            console.error('Payment error:', error)
+        } finally {
+            setIsProcessing(false);
+        }
     };
 
     return (
